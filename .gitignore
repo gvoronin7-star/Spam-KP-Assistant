@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data (БД и логи)
+data/*.db
+data/*.log
+!data/.gitkeep
+
+# Documentation - коммитим главное руководство
+!docs/
+!docs/РУКОВОДСТВО_ПО_ИСПОЛЬЗОВАНИЮ.md
+!docs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PyInstaller
+*.spec
+
+# Scheduler DB
+jobs.sqlite
+
+# Secrets (никогда не коммитить!)
+.env
+*.key
+*.pem

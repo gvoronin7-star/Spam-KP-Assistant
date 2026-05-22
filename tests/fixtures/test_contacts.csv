@@ -1,0 +1,4 @@
+email,company,contact_person,notes
+test1@example.com,Компания А,Иванов Иван,Основной контакт
+test2@example.com,Компания Б,Петров Петр,Региональный
+test3@example.com,Компания В,Сидорова Анна,Федеральный
