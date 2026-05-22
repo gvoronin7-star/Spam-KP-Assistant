@@ -299,7 +299,8 @@ class DialogSMTPSettings(QDialog):
     
     def _test_connection(self):
         """Тестирование подключения"""
-        self._validate_form()
+        if not self._validate_form():
+            return
         
         smtp_host = self.txt_smtp_host.text().strip()
         smtp_port = self.spn_smtp_port.value()
@@ -323,7 +324,6 @@ class DialogSMTPSettings(QDialog):
             return
         
         self.lbl_status.setText("Проверка подключения...")
-        QApplication = __import__('PyQt6.QtWidgets', fromList=['QApplication'])
         QApplication.processEvents()
         
         from services.smtp_manager import SMTPManager

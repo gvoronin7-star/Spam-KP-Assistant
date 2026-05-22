@@ -787,9 +787,26 @@ class MainWindow(QMainWindow):
 
     def _add_contact(self):
         """Добавить контакт"""
-        logger.info("Добавление контакта")
-        QMessageBox.information(self, "Скоро", "Ручное добавление контакта будет доступно в следующей версии")
-        
+        logger.info("Открытие диалога добавления контакта")
+
+        from .dialog_add_contact import DialogAddContact
+
+        dialog = DialogAddContact(self)
+        dialog.contact_saved.connect(self._on_contact_saved)
+        dialog.exec()
+    
+    def _on_contact_saved(self, contact_data):
+        """Обработчик сохранения контакта"""
+        logger.info(f"Контакт {contact_data['action']}: {contact_data['email']}")
+
+        # Обновить список контактов
+        self._load_contacts()
+
+        action_text = "добавлен" if contact_data['action'] == 'created' else "обновлён"
+        self.statusBar().showMessage(
+            f"Контакт '{contact_data['email']}' {action_text}!", 3000
+        )
+    
     def _new_template(self):
         """Создать новый шаблон"""
         logger.info("Создание нового шаблона")
@@ -927,16 +944,25 @@ class MainWindow(QMainWindow):
     
     def _configure_llm(self):
         """Настроить LLM"""
-        logger.info("Открытие настройки LLM")
-        QMessageBox.information(
-            self,
-            "Настройка ProxyAPI",
-            "Введите API ключ ProxyAPI:\n\n"
-            "1. Зарегистрируйтесь на https://console.proxyapi.ru/\n"
-            "2. Получите ключ в разделе 'Ключи API'\n"
-            "3. Вставьте ключ в файл .env"
-        )
+        logger.info("Открытие диалога настройки LLM")
+
+        from .dialog_llm_settings import DialogLLMSettings
+
+        dialog = DialogLLMSettings(self)
+        dialog.settings_saved.connect(self._on_llm_settings_saved)
+        dialog.exec()
     
+    def _on_llm_settings_saved(self, settings_data):
+        """Обработчик сохранения настроек LLM"""
+        logger.info(f"LLM настройки обновлены: {settings_data['model']}")
+
+        # Обновить статус в интерфейсе
+        self._check_llm_status()
+
+        self.statusBar().showMessage(
+            f"LLM настроен: {settings_data['model']}", 5000
+        )
+
     def _configure_smtp(self):
         """Настроить SMTP/IMAP"""
         logger.info("Открытие настройки SMTP/IMAP")
@@ -946,7 +972,7 @@ class MainWindow(QMainWindow):
         dialog = DialogSMTPSettings(self)
         dialog.account_saved.connect(self._on_account_saved)
         dialog.exec()
-    
+        
     def _open_llm_agent(self):
         """Открыть диалог управления LLM-агентом"""
         logger.info("Открытие LLM Agent")
